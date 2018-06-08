@@ -1,18 +1,33 @@
 /**********************************************************
  * WATERFALL
  **********************************************************/
-const async = require('async');
+var async = require('async');
 const http = require('http');
 const fs = require('fs');
 const filepath = process.argv[2];
+console.log(filepath);
 
-function callback(err, result) {}
+
 
 async.waterfall([
-    let url = fs.createReadStream(filepath),
-        // console.log(url),
-        http.get(url, function (response) {
-            let datacollector = '';
-            response.setEncoding('utf8').on('data', function (data) {})
-        });
-], callback());
+    function (callback) {
+        /*let url = '';
+        fs.readFile(filepath, 'utf8', function doneReading(err, fileContents) {
+            // if (err) {throw err;}
+            //console.log(fileContents);
+            //url = fileContents;
+            callback(fileContents)
+        });*/
+        callback(fs.readFile(filepath, 'utf8', function doneReading(err, fileContents) {
+            // if (err) {throw err;}
+            //console.log(fileContents);
+            //url = fileContents;
+            //callback(fileContents);
+            return fileContents;
+        }));
+    },
+    function (url) {
+        console.log(url);
+    }
+
+]);
