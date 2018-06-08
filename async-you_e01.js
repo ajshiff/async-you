@@ -11,20 +11,14 @@ console.log(filepath);
 
 async.waterfall([
     function (callback) {
-        /*let url = '';
+        // let url = '';
         fs.readFile(filepath, 'utf8', function doneReading(err, fileContents) {
             // if (err) {throw err;}
-            //console.log(fileContents);
-            //url = fileContents;
-            callback(fileContents)
-        });*/
-        callback(fs.readFile(filepath, 'utf8', function doneReading(err, fileContents) {
-            // if (err) {throw err;}
-            //console.log(fileContents);
-            //url = fileContents;
-            //callback(fileContents);
-            return fileContents;
-        }));
+            // console.log(fileContents);
+            // url = fileContents;
+            callback(fileContents);
+        });
+        //callback(url);
     },
     function (url) {
         console.log(url);

@@ -8,7 +8,6 @@ const filepath = process.argv[2];
 
 async.waterfall([
     function (callback) {
-        console.log(callback);
         callback(null, 'one', 'two');
     },
     function (arg1, arg2, callback) {
