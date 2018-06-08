@@ -5,17 +5,41 @@ var async = require('async');
 const http = require('http');
 const fs = require('fs');
 const filepath = process.argv[2];
-console.log(filepath);
+// console.log(filepath);
 
-readFile = function (callback) {
-    fs.readFile(filepath);
-    callback(null, one, two)
+var readFile = function (callback) {
+    fs.readFile(filepath, 'utf8', function (err, fileContents) {
+        if (err) {
+            // console.log('<-=SOMETHING WENT WRONG!-=>');
+        } else {
+            // console.log('<-=SOMETHING WENT RIGHT!-=>');
+            // console.log(fileContents);
+            callback(null, fileContents);
+        }
+    });
 };
 
+var httpGetFrom = function (url, callback) {
+    http.get(url, function (response) {
+        var dataCollector = '';
+        response.setEncoding().on('data', function (data) {
+            dataCollector += data;
+        });
+        response.on('end', function () {
+            // console.log(dataCollector);
+            callback(null, dataCollector);
+        });
+    });
+};
+
+var printResults = function (err, results) {
+    console.log(results);
+};
 
 async.waterfall([
-    readFile
-]);
+    readFile,
+    httpGetFrom,
+], printResults);
 
 
 /*********************************************************************
