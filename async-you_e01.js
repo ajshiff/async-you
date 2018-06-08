@@ -1,41 +1,41 @@
 /**********************************************************
  * WATERFALL
  **********************************************************/
-var async = require('async');
+// INITIALIZE LIBRARIES, DECLARE GLOBAL VARIABLES
+const async = require('async');
 const http = require('http');
 const fs = require('fs');
 const filepath = process.argv[2];
-// console.log(filepath);
 
+// READFILE ASYNC FUNCTION
 var readFile = function (callback) {
     fs.readFile(filepath, 'utf8', function (err, fileContents) {
         if (err) {
-            // console.log('<-=SOMETHING WENT WRONG!-=>');
+            throw err;
         } else {
-            // console.log('<-=SOMETHING WENT RIGHT!-=>');
-            // console.log(fileContents);
             callback(null, fileContents);
         }
     });
 };
-
+// HTTP.GET ASYNC FUNCTION
 var httpGetFrom = function (url, callback) {
     http.get(url, function (response) {
         var dataCollector = '';
-        response.setEncoding().on('data', function (data) {
+        response.setEncoding('utf8').on('data', function (data) {
             dataCollector += data;
         });
         response.on('end', function () {
-            // console.log(dataCollector);
             callback(null, dataCollector);
         });
     });
 };
 
+// PRINT RESULTS CALLBACK FUNCTION
 var printResults = function (err, results) {
     console.log(results);
 };
 
+// MAIN HANDLER: HANDLE IN SERIES via WATERFALL
 async.waterfall([
     readFile,
     httpGetFrom,
