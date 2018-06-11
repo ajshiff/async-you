@@ -4,7 +4,6 @@
 // INITIALIZE LIBRARIES, DECLARE GLOBAL VARIABLES
 const async = require('async');
 const http = require('http');
-const fs = require('fs');
 const url1 = process.argv[2];
 const url2 = process.argv[3];
 
@@ -16,17 +15,67 @@ const httpGetFrom = function (url, manager) {
             dataCollector += data;
         });
         response.on('end', function () {
-            //console.log(dataCollector)
-            manager(null, dataCollector);
+            // console.log(dataCollector); // Troubleshooter
+            // manager(null, dataCollector); // #2
+            return dataCollector; // #3
         });
     });
 };
 
-const printResults = function (results) {
+const printResults = function (err, results) {
     console.log(results);
 };
 
+// httpGetFrom(url1); // Troubleshooter
+// httpGetFrom(url2); // Troubleshooter
+
+// #1 CANNOT ASSIGN UNIQUE URLS -- 
+// async.series({
+//     requestOne: httpGetFrom,
+//     requestTwo: httpGetFrom
+// }, printResults);
+
+
+// #2 WORKS -- CREATES A FUNCTION THAT PASSES MANAGER TO THE HTTPGETFROM FUNCTION
 async.series({
-    requestOne: httpGetFrom(url1),
-    requestTwo: httpGetFrom(url2)
+    requestOne: function (manager) {
+        null,
+        httpGetFrom(url1, manager);
+    },
+    requestTwo: function (manager) {
+        null,
+        httpGetFrom(url1, manager);
+    }
 }, printResults);
+
+// #3 MANAGER DOES NOT YIELD TO THE ASYNC FUNCTION IT CALLS
+// async.series({
+//     requestOne: function (manager) {manager (null, httpGetFrom(url1));},
+//     requestTwo: function (manager) {manager (null, httpGetFrom(url2));}
+// }, printResults);
+
+// #4 WORKS -- FUNCTION THAT CREATES A FUNCTION THAT WORKS EXACTLY AS #2
+// function makeAGetFunction(url) {
+//     return function (manager) {
+//         httpGetFrom(url, manager);
+//     };
+// }
+// async.series({
+//     requestOne: makeAGetFunction(url1),
+//     requestTwo: makeAGetFunction(url2)
+// }, printResults);
+
+// BONUS, UNRELATED -- IIFY FUNCTIONS AND CLOSURES
+// var hi = (function () {
+//     var num;
+//     function changeNum(numIn) {
+//         if (nunIn > 5) {
+//             num = numIn;
+//         }
+//     }
+//     //aksdjf
+//     return {
+//         setNum: changeNum
+//     };
+// })()
+// hi.setNum(3)
