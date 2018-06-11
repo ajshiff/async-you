@@ -16,8 +16,8 @@ const httpGetFrom = function (url, manager) {
         });
         response.on('end', function () {
             // console.log(dataCollector); // Troubleshooter
-            // manager(null, dataCollector); // #2
-            return dataCollector; // #3
+            manager(null, dataCollector); // #2
+            // return dataCollector; // #3
         });
     });
 };
@@ -44,7 +44,7 @@ async.series({
     },
     requestTwo: function (manager) {
         null,
-        httpGetFrom(url1, manager);
+        httpGetFrom(url2, manager);
     }
 }, printResults);
 
