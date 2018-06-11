@@ -36,7 +36,7 @@ const printResults = function (err, results) {
 // }, printResults);
 
 
-// #2 WORKS -- CREATES A FUNCTION THAT PASSES MANAGER TO THE HTTPGETFROM FUNCTION
+// #2 WORKS -- CREATES A FUNCTION THAT PASSES MANAGER TO THE HTTPGETFROM
 async.series({
     requestOne: function (manager) {
         null,
