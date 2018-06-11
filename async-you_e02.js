@@ -39,11 +39,9 @@ const printResults = function (err, results) {
 // #2 WORKS -- CREATES A FUNCTION THAT PASSES MANAGER TO THE HTTPGETFROM
 async.series({
     requestOne: function (manager) {
-        null,
         httpGetFrom(url1, manager);
     },
     requestTwo: function (manager) {
-        null,
         httpGetFrom(url2, manager);
     }
 }, printResults);
