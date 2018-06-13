@@ -1,5 +1,8 @@
 /**********************************************************
  * SERIES OBJECT
+ * series runs an arrary or object of functions in series,
+ * then gives the collection of their responses as a result
+ * to a final function. series runs in series.
  **********************************************************/
 // INITIALIZE LIBRARIES, DECLARE GLOBAL VARIABLES
 const async = require('async');

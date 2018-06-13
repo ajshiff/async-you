@@ -1,5 +1,9 @@
 /**********************************************************
  * WATERFALL
+ * waterfall takes the output of one function, and gives it
+ * as a data input to the next function until all of the 
+ * functions have run, when there is ultimately one function
+ * that will perform the opperation. Waterfall runs in series.
  **********************************************************/
 // INITIALIZE LIBRARIES, DECLARE GLOBAL VARIABLES
 const async = require('async');

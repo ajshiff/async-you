@@ -1,5 +1,10 @@
 /**********************************************************
  * ASYNC EACH
+ * each runs in parallel. As long as none of the processes
+ * return with an error, the last function will run it's main
+ * block of code, otherwise it will immediately terminate all
+ * non-finished processes, and run the process defined to run
+ * in the case of the error. each runs in parallel.
  **********************************************************/
 // DECLARE NEEDED VARIABLES AND INLCUDE NEEDED LIBRARIES
 const http = require('http');
@@ -14,7 +19,7 @@ var urls = [url1, url2]; // OR
 
 // FUNCTION TO SEND HTTP GET REQUEST
 const httpGetRequest = function (url, manager) {
-    http.get(url, function (response) {}).on('error', function (err) {
+    http.get(url, function ( /*response*/ ) {}).on('error', function (err) {
         manager(err);
     });
 };
