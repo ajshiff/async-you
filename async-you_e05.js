@@ -8,14 +8,9 @@ const port = process.argv[3];
 const url = domain + ':' + port;
 var postPath = '/users/create';
 var getPath = '/users';
-// console.log(process.argv[2]);
-// console.log(process.argv[3]);
-// console.log(url);
 
-const httpPostRequest = function (incrementor) {
-    console.log('PRINT INCREMENTOR: ' + incrementor);
-    // incrementor++;
-    // console.log('PRINT TWO: ' + incrementor);
+const httpPostRequest = function (incrementor, manager) {
+    incrementor++;
     var post_options = {
         host: domain,
         port: port,
@@ -23,25 +18,27 @@ const httpPostRequest = function (incrementor) {
         method: 'POST'
     };
     let postRequest = http.request(post_options, function (response) {
-        // let dataCollector = '';
-        // response.setEncoding('utf8').on('data', function (data) {
-        //     // console.log(data);
-        //     // dataCollector += data;
-        // });
-        // response.on('end', function () {
-        //     // manager(null, dataCollector);
-        // });
+        let dataCollector = '';
+        response.setEncoding('utf8').on('data', function (data) {});
+        response.on('end', function () {
+            manager(null, null);
+        });
     });
     let jsondata = JSON.stringify({
         user_id: incrementor
     });
-    console.log('JSONData: ' + jsondata)
+    postRequest.on('error', function (err) {
+        manager(err, null);
+    });
+    // postRequest.write(jsondata, function () {
+    //     postRequest.end();
+    // });
     postRequest.write(jsondata);
     postRequest.end();
-    postRequest.on('error', function (err) {});
+
 };
 
-httpPostRequest();
+//httpPostRequest();
 
 const httpGetRequest = function (url) {
     // console.log('BEGIN GET REQUEST: ');
@@ -59,4 +56,8 @@ const httpGetRequest = function (url) {
     });
 };
 
-async.times(5, httpPostRequest, httpGetRequest(url));
+async.times(5, httpPostRequest, (err, data) => {
+    httpGetRequest(url);
+});
+
+var x = httpGetRequest();
