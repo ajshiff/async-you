@@ -19,7 +19,7 @@ const httpGetRequest = function (url, manager) {
         });
         response.on('end', function () {
             manager(null, dataCollector);
-        })
+        });
     }).on('error', function (err) {
         manager(err);
     });
